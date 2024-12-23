@@ -1,0 +1,388 @@
+{
+  "_default": {
+    "2": {
+      "name": "banana",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "y",
+      "compliments": ["peanut butter"],
+      "season": [1, 12]
+    },
+    "3": {
+      "name": "strawberry",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["chocolate"],
+      "season": [1, 12]
+    },
+    "4": {
+      "name": "blueberry",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["yogurt"],
+      "season": [5, 10]
+    },
+    "5": {
+      "name": "mango",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "y",
+      "compliments": ["lime"],
+      "season": [9, 3]
+    },
+    "6": {
+      "name": "watermelon",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["mint"],
+      "season": [1, 12]
+    },
+    "7": {
+      "name": "pineapple",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["coconut"],
+      "season": [1, 12]
+    },
+    "9": {
+      "name": "grape",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["cheese"],
+      "season": [12, 4]
+    },
+    "10": {
+      "name": "pear",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["walnuts"],
+      "season": [1, 12]
+    },
+    "11": {
+      "name": "kiwi",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["strawberries"],
+      "season": [5, 6]
+    },
+    "12": {
+      "name": "peach",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["cream"],
+      "season": [11, 4]
+    },
+    "13": {
+      "name": "carrot",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["hummus", "ginger"],
+      "season": [4, 10]
+    },
+    "14": {
+      "name": "potato",
+      "type": ["vegetable", "carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["sausages"],
+      "season": [1, 12]
+    },
+    "16": {
+      "name": "zucchini",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["garlic", "beetroot"],
+      "season": [11, 3]
+    },
+    "17": {
+      "name": "corn",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["cous cous"],
+      "season": [12, 3]
+    },
+    "18": {
+      "name": "pumpkin",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["cinnamon"],
+      "season": [4, 9]
+    },
+    "19": {
+      "name": "capsicum",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["onion"],
+      "season": [10, 4]
+    },
+    "20": {
+      "name": "peas",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["mint"],
+      "season": [8, 12]
+    },
+    "21": {
+      "name": "cucumber",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["yogurt"],
+      "season": [11, 3]
+    },
+    "22": {
+      "name": "onion",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["capsicum"],
+      "season": [3, 10]
+    },
+    "23": {
+      "name": "lettuce",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["vinegar"],
+      "season": [10, 4]
+    },
+    "24": {
+      "name": "beetroot",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["feta cheese"],
+      "season": [4, 9]
+    },
+    "25": {
+      "name": "tomato",
+      "type": ["fruit"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["olives"],
+      "season": [12, 2]
+    },
+    "26": {
+      "name": "rice",
+      "type": ["carb"],
+      "taste": ["savoury", "sweet"],
+      "favourite": "n",
+      "compliments": ["broccoli"],
+      "season": "n/a"
+    },
+    "27": {
+      "name": "pizza bases",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "y",
+      "compliments": ["olives", "pineapple"],
+      "season": "n/a"
+    },
+    "28": {
+      "name": "gnocci",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "29": {
+      "name": "wraps",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "30": {
+      "name": "udon noodles",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "31": {
+      "name": "rice noodles",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "32": {
+      "name": "soba noodles",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "33": {
+      "name": "ramen noodles",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "34": {
+      "name": "pasta",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["tomato"],
+      "season": "n/a"
+    },
+    "35": {
+      "name": "cous cous",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["beetroot", "corn"],
+      "season": "n/a"
+    },
+    "36": {
+      "name": "bagels",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["tomato", "avocado"],
+      "season": "n/a"
+    },
+    "37": {
+      "name": "brown rice",
+      "type": ["carb"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "38": {
+      "name": "quinoa",
+      "type": ["carb", "protein"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["corn"],
+      "season": "n/a"
+    },
+    "39": {
+      "name": "tofu",
+      "type": ["protein"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["broccoli", "cabbage"],
+      "season": "n/a"
+    },
+    "40": {
+      "name": "sausages",
+      "type": ["protein"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": ["mushroom"],
+      "season": "n/a"
+    },
+    "41": {
+      "name": "kidney beans",
+      "type": ["protein"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "42": {
+      "name": "chickpeas",
+      "type": ["protein"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "43": {
+      "name": "lentils",
+      "type": ["protein"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "44": {
+      "name": "butter beans",
+      "type": ["protein"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "45": {
+      "name": "tahini",
+      "type": ["fat"],
+      "taste": ["savoury"],
+      "favourite": "y",
+      "compliments": ["mushroom"],
+      "season": "n/a"
+    },
+    "46": {
+      "name": "cashews",
+      "type": ["fat", "protein"],
+      "taste": ["sweet", "savoury"],
+      "favourite": "y",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "47": {
+      "name": "coconut cream",
+      "type": ["fat"],
+      "taste": ["sweet", "savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "48": {
+      "name": "pepitas",
+      "type": ["fat"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "49": {
+      "name": "cream",
+      "type": ["fat"],
+      "taste": ["sweet", "savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "50": {
+      "name": "walnuts",
+      "type": ["fat"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": "n/a"
+    },
+    "51": {
+      "name": "oats",
+      "type": ["carb"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": ["banana", "carrot"],
+      "season": "n/a"
+    }
+  }
+}
