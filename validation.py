@@ -1,15 +1,35 @@
-def valid_taste(str):
+def validate_taste(args, prompt, edit):
       valid_tastes = ['sweet', 'savoury']
-      if str not in valid_tastes:
-            print(f"Invalid taste. Choose from: {valid_tastes}")
-            return False
+      
+      if edit:
+            valid_options = []
+            for type in valid_tastes:
+                  add_type = "+" + type
+                  rm_type = "-" + type
+                  valid_options.append(add_type)
+                  valid_options.append(rm_type)
+                  
+            for str in args:
+                  if str not in valid_options:
+                        print(f"Invalid taste: {str}")
+                        return False
+      elif prompt:
+            if len(args) > 1:
+                  print("Only one taste argument allowed for a meal prompt.")
+                  return False
+            for str in args:
+                  if str not in valid_tastes:
+                        print(f"Invalid taste: {str}")
+                        return False
       else:
-            return True
+            for str in args:
+                  if str not in valid_tastes:
+                        print(f"Invalid taste: {str}")
+                        return False
+      return True
       
 def validate_type(args, edit):
       valid_types = ['fruit', 'vegetable', 'carb', 'fat', 'protein']
-      
-      
       if edit:
             valid_options = []
             for type in valid_types:
@@ -20,12 +40,12 @@ def validate_type(args, edit):
             
             for str in args:
                   if str not in valid_options:
-                       print(f"Invalid editable type. Choose from: {valid_options}")
+                       print(f"Invalid type: {str}")
                        return False
       else:
             for str in args:
                   if str not in valid_types:
-                        print(f"Invalid type. Choose from: {valid_types}")
+                        print(f"Invalid type: {str}")
                         return False
       return True
       
@@ -74,10 +94,10 @@ def validate_name(args, edit):
       If editing, ensures only two arguments were provided - -<name> and +<new name>
       """
       if edit:
-            if len(args) != 2:
+            if len(args) > 2:
                   print("Exactly two arguments required to edit name: -<old name> +<new name>")
                   return False
-            else:
+            elif len(args) == 2:
                   editing = False
                   if args[0][0] in "+-" and args[1][0] in "+-":
                       editing = True     
@@ -92,7 +112,7 @@ def validate_name(args, edit):
             
       return True
 
-def valid_args(parsed_input, edit=False):
+def valid_args(parsed_input, prompt, edit):
       """
       Validates arguments in parsed_input against flags.  
       Converts arguments where required - e.g. str months to int, quoted names to single arg??
@@ -115,9 +135,9 @@ def valid_args(parsed_input, edit=False):
                       if not valid:
                             return False
                 case '--taste':
-                      for arg in args:
-                            if not valid_taste(arg):
-                                  return False
+                      valid = validate_taste(args, prompt, edit)
+                      if not valid:
+                            return False
                 case '-f':
                       if len(args) > 1:
                             print("Too many arguments provided for -f flag.")
@@ -126,7 +146,8 @@ def valid_args(parsed_input, edit=False):
                             if not valid_fav(args[0]):
                                   return False
                 case '-c':
-                      print("Validating compliments")
+                      # Compliments don't (yet) require validation
+                      continue
                 case '-s':
                       if len(args) != 2:
                             print("Must provide exactly two months.")

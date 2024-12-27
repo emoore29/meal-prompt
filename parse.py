@@ -24,7 +24,8 @@ def parse_input(input, flags):
       -c "blood orange" --> ('-c', ['blood orange'])
       """
       # Match all flags and corresponding args
-      pattern = r"(-[a-z]{1}\s)(.*?)(?=-[a-z]{1}\s|$)"
+    #   pattern = r"(-[a-z]{1}\s)(.*?)(?=-[a-z]{1}\s|$)"
+      pattern = r'(-[a-z]|--[a-z]+)\s+(.*?)(?=(?:-[a-z]|--[a-z]+)\s+|$)'
       # Returns list of tuples of matches
       results = re.findall(pattern, input)
       

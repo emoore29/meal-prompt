@@ -4,8 +4,7 @@ from datetime import date
 def is_in_season(entry):
       if entry == 'n/a':
             # Ignore season for non-seasonal items
-            return True
-
+            return False
             
       start = entry[0]
       end = entry[1]

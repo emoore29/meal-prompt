@@ -11,9 +11,9 @@ q = Query()
 
 item_flags = ['-n', '-t', '--taste', '-f', '-c', '-s']
 
-def validate_line(line, required_flags, allowed_flags):
+def process_input(line, required_flags, allowed_flags, prompt, edit):
     """
-    Parses and validates a user's input.
+    Parses, validates, and transforms a user's input.
     
     Checks flags and provided arguments are valid.
     
@@ -28,7 +28,7 @@ def validate_line(line, required_flags, allowed_flags):
     if not valid_flags(parsed_input, required_flags, allowed_flags):
         return False
     
-    if not valid_args(parsed_input, edit=True):
+    if not valid_args(parsed_input, prompt, edit):
         return False
     
     # Transform input
@@ -41,29 +41,25 @@ def handle_remove(line):
     """
     Removes item from database if it exists.
     """
-    
-    # Convert user input to list of tuples for validation
-    list_cmds = parse_flags(line)
-    
-    required_flags = ['-n']
-    allowed_flags = ['-n']
-    
-    # Check provided flags are valid
-    if not list_cmds or not valid_flags(list_cmds, required_flags, allowed_flags):
+    processed_input = process_input(line, ['-n'], ['-n'], False)
+    if not processed_input:
+        print("Remove cancelled.")
         return
-    else:
-        print(list_cmds[0][1])
-        name = " ".join(list_cmds[0][1])
-        item = db.search(q.name == name)
-        if item:
-            confirm_delete = input(f"Item found: {item}. Confirm delete (y/n) ")
-            if confirm_delete == "y":
-                db.remove(q.name == name)
-                print(f"Deleted item: {name}")
-            else:
-                print("Item not deleted.")
+    
+    name = processed_input['-n'][0]
+    results = db.search(q.name == name)
+    if len(results) == 1:
+        print("Item found:\n")
+        print_item(results[0])
+        print("\n")
+        confirm_delete = input(f"Confirm delete (y/n) ")
+        if confirm_delete == "y":
+            db.remove(q.name == name)
+            print(f"Deleted item: {name}")
         else:
-            print(f"Item not found in db: {name}")
+            print("Item not deleted.")
+    else:
+        print(f"Item not found in db: {name}")
 
 def handle_prompt(line):
     """
@@ -71,24 +67,14 @@ def handle_prompt(line):
     
     """
 
-    list_cmds = parse_flags(line)
-    required_flags = ['--taste']
-    allowed_flags = ['--taste']
-
-    if not list_cmds or not valid_flags(list_cmds, required_flags, allowed_flags):
-        return
+    processed_input = process_input(line, ['--taste'], ['--taste'], prompt=True, edit=False)
+    if not processed_input:
+        print("Prompt cancelled")
+        return 
     
-    for cmd in list_cmds:
-        flag = cmd[0][0]            
-        
-        match flag:
-            case '--taste':
-                for taste in cmd[1]:
-                    is_valid_taste = validate_taste(taste)
-                    if is_valid_taste:
-                        generate_prompt(taste)
-                    else:
-                        return
+    taste = processed_input['--taste'][0]
+    
+    generate_prompt(taste)
     
 def generate_prompt(taste):
     """
@@ -200,11 +186,11 @@ def handle_edit(line):
     """
     Edits item in database based on user input.
     """
-    input = validate_line(line, ['-n'], item_flags)
+    input = process_input(line, ['-n'], item_flags)
     if not input:
         print("Edit cancelled.")
         return
-    print(input)
+    print("Changes to make:", input)
     
 
 def validate_add_args(line):
@@ -280,7 +266,7 @@ class MealPrompt(cmd.Cmd):
                           | |                       | |        
                           |_|                       |_|        
 """
-    intro = f"{GREEN}{banner}{END}\nWelcome to Meal Prompt! \nBy emoore29.github.io.  \nBanner font by patorjk.com. \nType 'help' for available commands. \n"
+    intro = f"{GREEN}{banner}{END} \nBy emoore29.github.io.  \nBanner font by patorjk.com. \n\nWelcome to Meal Prompt!\nType 'help' for available commands. \n"
     
     def __init__(self):
         super().__init__()
@@ -299,17 +285,21 @@ class MealPrompt(cmd.Cmd):
         Edit an item's features.
         
         Required:
-        -n         Name of item to edit (use +<new name> to update name)
+        -n         Name of item to edit (use -<old_name> +<new_name> to update name)
         
         
-        Optional (at least one required):
-        (+<arg> to add, -<arg> to remove, <arg> to replace all)
+        Update:
+        (+<arg> to add, -<arg> to remove)
         
         -t         Type (+<type> to add a type, -<type> to rm a type)
         --taste    Taste
-        -f         Favourite
         -c         Compliments
-        -s         Season
+        
+        Replace:
+        (input <args> as normal - it will replace the old args)
+        -s         Season 
+        -f         Favourite
+        
         """
         handle_edit(line)
 
