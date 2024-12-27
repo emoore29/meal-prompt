@@ -383,6 +383,22 @@
       "favourite": "n",
       "compliments": ["banana", "carrot"],
       "season": "n/a"
+    },
+    "52": {
+      "name": "apple",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "y",
+      "compliments": [],
+      "season": [3, 3]
+    },
+    "53": {
+      "name": "blood orange",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [1, 12]
     }
   }
 }

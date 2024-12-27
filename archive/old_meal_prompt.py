@@ -1,11 +1,10 @@
 import random
 import argparse
 from tinydb import TinyDB, Query
-import test.display as display
-import test.season as season
-import remove
-import add
+from print import *
+from season import *
 
+# Original code using argparse instead of cmd, kept for reference.
 
 db = TinyDB('db.json')
 q = Query()
@@ -41,7 +40,7 @@ def generate_prompt(args):
         for ingredient in ingredients:
                 print(f"- {ingredient}")
 
-def get_random_ingredient(type, flavour):
+def get_random_ingredient(type, taste):
         """
         Selects an ingredient from a source and category
         
@@ -50,11 +49,11 @@ def get_random_ingredient(type, flavour):
         flavour -- sweet or savoury
         """
         
-        query = q.type.any(type) & q.flavour.any(flavour)
+        query = q.type.any(type) & q.flavour.any(taste)
         if type == "fruit" or type == "vegetable":
-              query &= q.season.test(season.is_in_season)
+              query &= q.season.test(is_in_season)
         
-        pick_from_favs = random.choices([True, False], weights=[70, 100-65], k=1)[0]
+        pick_from_favs = random.choices([True, False], weights=[70, 30], k=1)[0]
         if pick_from_favs:
                 matches = db.search(query & (q.favourite == "y"))
                 if len(matches) > 0: # Only get from favs if there are favourites
