@@ -6,35 +6,33 @@ from season import *
 db = TinyDB('db.json')
 q = Query()
 
-def parse_input(input, flags):
+def parse_input(input):
       """
-      Captures flags and respective arguments in dictionary key-val pairs.
+      Captures any args before flags.
+      
+      Then captures flags and respective arguments in dictionary key-val pairs.
       
       Param:
       input -- input from user
     
       Return:
       parsed_input -- dictionary in the form {flag: argument}
-      
-      TODO:
-      Words separated as spaces are treated as individual args:
-      --taste sweet savoury --> ('--taste', ['sweet', 'savoury'])
-      
-      Words separated by spaces wrapped in quotation marks are treated as one arg:
-      -c "blood orange" --> ('-c', ['blood orange'])
       """
-      # Match all flags and corresponding args
-    #   pattern = r"(-[a-z]{1}\s)(.*?)(?=-[a-z]{1}\s|$)"
-      pattern = r'(-[a-z]|--[a-z]+)\s+(.*?)(?=(?:-[a-z]|--[a-z]+)\s+|$)'
-      # Returns list of tuples of matches
-      results = re.findall(pattern, input)
+      if input == "":
+          print("At least one positional argument or flag is required. Type 'help' for more info.")
+          return False
       
-      # Initialise dictionary to add flag/args as key/val
-      parsed_input = {}
-
-      # Trim flags and args of whitespace
-      # Create list of space-separated args, 
-      # with space-separated args wrapped in "" treated as one arg
+      # First split input into positional args and flags
+      split_input = re.split(r"(?=-|$)", input, maxsplit=1)
+      positional_args = split_input[0].strip().split(" ") # List of positional args
+      raw_flags = split_input[1].strip()
+      
+      # Get flags and corresponding args
+      pattern = r'(-[a-z]|--[a-z]+)\s+(.*?)(?=(?:-[a-z]|--[a-z]+)\s+|$)'
+      results = re.findall(pattern, raw_flags)
+      
+      # Add key-val flag-args to dictionary
+      parsed_flags = {}
       for tuple in results:
             flag = tuple[0].strip()
             raw_args = tuple[1]
@@ -49,8 +47,8 @@ def parse_input(input, flags):
                 # Join all the matched groups (e.g. +, orange, '')
                 joined = "".join(match).strip()
                 refined_args.append(joined)
-            parsed_input[flag] = refined_args
-      return parsed_input
+            parsed_flags[flag] = refined_args
+      return positional_args, parsed_flags
 
 
 def parse_flags(line):

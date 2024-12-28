@@ -11,7 +11,7 @@ q = Query()
 
 item_flags = ['-n', '-t', '--taste', '-f', '-c', '-s']
 
-def process_input(line, required_flags, allowed_flags, prompt, edit):
+def process_input(line, required_flags, allowed_flags, prompt, edit, positional_args=[]):
     """
     Parses, validates, and transforms a user's input.
     
@@ -22,19 +22,36 @@ def process_input(line, required_flags, allowed_flags, prompt, edit):
     False -- if not valid
     """
     # Parse input
-    parsed_input = parse_input(line, allowed_flags)
-    
-    # Validate input
-    if not valid_flags(parsed_input, required_flags, allowed_flags):
+    if parse_input(line):
+        parsed_positional, parsed_flags = parse_input(line)
+    else:
         return False
     
-    if not valid_args(parsed_input, prompt, edit):
+    print('parsed flags', parsed_flags)
+        
+    # Check at least a positional arg or flag was provided
+    if not parsed_flags and not parsed_positional:
+        print("Input missing either flags or positional args.")
         return False
+    
+    # Validate parsed input
+    if parsed_positional[0] != '':
+        if not valid_positional(parsed_positional, positional_args):
+            print("invalid positional")
+            return False
+
+    if parsed_flags != {}:
+        if not valid_flags(parsed_flags, required_flags, allowed_flags):
+            print("invalid flags")
+            return False
+        if not valid_flag_args(parsed_flags, prompt, edit):
+            print("invalid flag args")
+            return False
     
     # Transform input
-    transformed_input = transform_input(parsed_input)
+    transformed_flags = transform_input(parsed_flags)
     
-    return transformed_input
+    return parsed_positional, transformed_flags
     
 
 def handle_remove(line):
@@ -86,17 +103,17 @@ def generate_prompt(taste):
     protein = get_random_ingredient("protein", taste)
     fat = get_random_ingredient("fat", taste)
     
-    ingredients = [item for item in [fruit, veg, protein, carb, fat] if item]
-    
-    # Remove duplicates by converting to set and back to list
-    non_duplicate_ingredients = list(set(ingredients))
+    title = f"{taste.title()} Meal Prompt"
     
     print("")
-    print("-" * 20)
-    print(f"{taste.title()} Meal Prompt")
-    print("-" * 20)
-    for ingredient in non_duplicate_ingredients:
-            print(f"- {ingredient}") 
+    print("-" * len(title))
+    print(title)
+    print("-" * len(title))
+    print(f"Fruit: {fruit}") 
+    print(f"Veg: {veg}") if veg else None
+    print(f"Carb: {carb}") 
+    print(f"Protein: {protein}") 
+    print(f"Fat: {fat}") 
     print("")
     
 def get_random_ingredient(type, taste):
@@ -141,40 +158,50 @@ def handle_show(line):
     
     """
     
-    allowed_positional = ['all', 'seasonal', 'favs', 'exact']
-    allowed_flags = ['-n', '-t', '--taste']
-
-    parsed = parse_show(line, allowed_positional, allowed_flags)
-    if parsed:
-        query, is_name_query, show_all = parsed
-    else:
-        query = None
-        is_name_query = False
-        show_all = False
-    
-    if query:
-        print("")
-        results = db.search(query)
-        if results:
-            if is_name_query:
-                print_item(results[0])
-            else:
-                print_cols(results)
-        else:
-            print("No items found.")
-        print("")
-    elif show_all:
-        print("")
-        types = ['fruit', 'vegetable', 'carb', 'protein', 'fat']
-        for type in types:
-            items = get_all_type(type)
-            print("-" * (len(type) + 1))
-            print(f"{type.title()}s")
-            print("-" * (len(type) + 1))
-            print_cols(items)
-            print("")
-        
+    processed_input = process_input(line, [], item_flags, False, False, ['all', 'seasonal', 'fav'])
+    if not processed_input:
+        print("Show cancelled.")
         return
+    
+    print(processed_input)
+    
+    # allowed_positional = ['all', 'seasonal', 'favs', 'exact']
+    # allowed_flags = ['-n', '-t', '--taste']
+
+    # parsed = parse_show(line, allowed_positional, allowed_flags)
+    
+    
+    
+    # if parsed:
+    #     query, is_name_query, show_all = parsed
+    # else:
+    #     query = None
+    #     is_name_query = False
+    #     show_all = False
+    
+    # if query:
+    #     print("")
+    #     results = db.search(query)
+    #     if results:
+    #         if is_name_query:
+    #             print_item(results[0])
+    #         else:
+    #             print_cols(results)
+    #     else:
+    #         print("No items found.")
+    #     print("")
+    # elif show_all:
+    #     print("")
+    #     types = ['fruit', 'vegetable', 'carb', 'protein', 'fat']
+    #     for type in types:
+    #         items = get_all_type(type)
+    #         print("-" * (len(type) + 1))
+    #         print(f"{type.title()}s")
+    #         print("-" * (len(type) + 1))
+    #         print_cols(items)
+    #         print("")
+        
+    #     return
 
 def get_all_type(type):
     """
@@ -186,11 +213,11 @@ def handle_edit(line):
     """
     Edits item in database based on user input.
     """
-    input = process_input(line, ['-n'], item_flags)
-    if not input:
+    processed_input = process_input(line, ['-n'], ['-n'], prompt=False, edit=True)
+    if not processed_input:
         print("Edit cancelled.")
         return
-    print("Changes to make:", input)
+    print("Changes to make:", processed_input)
     
 
 def validate_add_args(line):

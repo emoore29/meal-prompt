@@ -71,19 +71,23 @@ def valid_month(str):
       else:
             return True
       
-def valid_flags(parsed_input, required, allowed):
+def valid_flags(parsed_flags, required, allowed):
     """
     Checks user has provided all required flags and/or the provided flags are valid.
     Returns False if they have not.
     """
-    for flag in parsed_input.keys():
+    if not parsed_flags:
+          print("No flags provided")
+          return False
+    
+    for flag in parsed_flags.keys():
         if flag not in allowed:
                 print(f"Provided flag is invalid: {flag}")  
                 return False      
 
     # Check required flags were provided
     for flag in required:
-        if flag not in parsed_input.keys():
+        if flag not in parsed_flags.keys():
             print(f"Required flag missing: {flag}")
             return False
     return True
@@ -112,7 +116,7 @@ def validate_name(args, edit):
             
       return True
 
-def valid_args(parsed_input, prompt, edit):
+def valid_flag_args(parsed_flags, prompt, edit):
       """
       Validates arguments in parsed_input against flags.  
       Converts arguments where required - e.g. str months to int, quoted names to single arg??
@@ -120,7 +124,7 @@ def valid_args(parsed_input, prompt, edit):
       Params:
       parsed_input -- list of tuples containing (flag, args)    
       """
-      for flag, args in parsed_input.items():
+      for flag, args in parsed_flags.items():
           if len(args) == 0:
                 print(f"Missing arguments for {flag}")
                 return False
@@ -157,3 +161,14 @@ def valid_args(parsed_input, prompt, edit):
                                   return False
       return True
 
+def valid_positional(parsed_positional, positional_args):
+      """
+      Checks list of positional args are allowed
+      """
+      
+      for arg in parsed_positional:
+            if arg not in positional_args:
+                  print(f"Invalid positional argument: {arg}")
+                  return False
+       
+      return True
