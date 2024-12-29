@@ -1,4 +1,4 @@
-def validate_taste(args, prompt, edit):
+def validate_taste(args, prompt=False, edit=False):
       valid_tastes = ['sweet', 'savoury']
       
       if edit:
@@ -28,7 +28,7 @@ def validate_taste(args, prompt, edit):
                         return False
       return True
       
-def validate_type(args, edit):
+def validate_type(args, edit=False):
       valid_types = ['fruit', 'vegetable', 'carb', 'fat', 'protein']
       if edit:
             valid_options = []

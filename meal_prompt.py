@@ -26,8 +26,6 @@ def process_input(line, required_flags, allowed_flags, prompt, edit, positional_
         parsed_positional, parsed_flags = parse_input(line)
     else:
         return False
-    
-    print('parsed flags', parsed_flags)
         
     # Check at least a positional arg or flag was provided
     if not parsed_flags and not parsed_positional:
@@ -157,51 +155,31 @@ def handle_show(line):
     --taste {taste} -- shows all items of given taste
     
     """
-    
-    processed_input = process_input(line, [], item_flags, False, False, ['all', 'seasonal', 'fav'])
+    query = None
+    is_name_query = False
+    processed_input = process_input(line, [], item_flags, False, False, ['all', 'seasonal', 'favs', 'exact'])
     if not processed_input:
         print("Show cancelled.")
         return
-    
-    print(processed_input)
-    
-    # allowed_positional = ['all', 'seasonal', 'favs', 'exact']
-    # allowed_flags = ['-n', '-t', '--taste']
 
-    # parsed = parse_show(line, allowed_positional, allowed_flags)
+    result = generate_query(processed_input)
     
+    if result:
+        query, is_name_query = result
     
-    
-    # if parsed:
-    #     query, is_name_query, show_all = parsed
-    # else:
-    #     query = None
-    #     is_name_query = False
-    #     show_all = False
-    
-    # if query:
-    #     print("")
-    #     results = db.search(query)
-    #     if results:
-    #         if is_name_query:
-    #             print_item(results[0])
-    #         else:
-    #             print_cols(results)
-    #     else:
-    #         print("No items found.")
-    #     print("")
-    # elif show_all:
-    #     print("")
-    #     types = ['fruit', 'vegetable', 'carb', 'protein', 'fat']
-    #     for type in types:
-    #         items = get_all_type(type)
-    #         print("-" * (len(type) + 1))
-    #         print(f"{type.title()}s")
-    #         print("-" * (len(type) + 1))
-    #         print_cols(items)
-    #         print("")
-        
-    #     return
+    if query:
+        print("")
+        results = db.search(query)
+        if results:
+            if is_name_query:
+                print_item(results[0])
+            else:
+                print_cols(results)
+        else:
+            print("No items found.")
+        print("")
+    else:
+        print("Error.")
 
 def get_all_type(type):
     """
