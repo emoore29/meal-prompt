@@ -37,12 +37,16 @@ def process_input(line, required_flags, allowed_flags, prompt, edit, positional_
         if not valid_positional(parsed_positional, positional_args):
             print("invalid positional")
             return False
+    
+    bulk = False
+    if "bulk" in parsed_positional:
+        bulk = True
 
     if parsed_flags != {}:
         if not valid_flags(parsed_flags, required_flags, allowed_flags):
             print("invalid flags")
             return False
-        if not valid_flag_args(parsed_flags, prompt, edit):
+        if not valid_flag_args(parsed_flags, prompt, edit, bulk):
             print("invalid flag args")
             return False
     
@@ -50,31 +54,34 @@ def process_input(line, required_flags, allowed_flags, prompt, edit, positional_
     transformed_flags = transform_input(parsed_flags)
     
     return parsed_positional, transformed_flags
-    
 
 def handle_remove(line):
     """
     Removes item from database if it exists.
     """
-    processed_input = process_input(line, ['-n'], ['-n'], False)
+    processed_input = process_input(line, ['-n'], ['-n'], False, False)
     if not processed_input:
         print("Remove cancelled.")
         return
-    
-    name = processed_input['-n'][0]
+    name = processed_input[1]['-n'][0]
     results = db.search(q.name == name)
-    if len(results) == 1:
-        print("Item found:\n")
+    if len(results) > 1:
+        print(f"Multiple items found with name {name}")
+        confirm_delete = input("\nDeletion will remove all items. Confirm delete? (y/n) ")
+    elif len(results) == 1:
+        print("")
         print_item(results[0])
-        print("\n")
-        confirm_delete = input(f"Confirm delete (y/n) ")
-        if confirm_delete == "y":
-            db.remove(q.name == name)
-            print(f"Deleted item: {name}")
-        else:
-            print("Item not deleted.")
+        confirm_delete = input(f"\nConfirm delete (y/n) ")
     else:
         print(f"Item not found in db: {name}")
+        return
+    
+    if confirm_delete == "y":
+        db.remove(q.name == name)
+        print(f"Deleted item: {name}")
+    else:
+        print("Item not deleted.")
+    
 
 def handle_prompt(line):
     """
@@ -162,10 +169,7 @@ def handle_show(line):
         print("Show cancelled.")
         return
 
-    result = generate_query(processed_input)
-    
-    if result:
-        query, is_name_query = result
+    query, is_name_query = generate_query(processed_input)
     
     if query:
         print("")
@@ -181,12 +185,6 @@ def handle_show(line):
     else:
         print("Error.")
 
-def get_all_type(type):
-    """
-    Gets items for a given type
-    """
-    return db.search(q.type.any(type))
-
 def handle_edit(line):
     """
     Edits item in database based on user input.
@@ -197,65 +195,59 @@ def handle_edit(line):
         return
     print("Changes to make:", processed_input)
     
-
-def validate_add_args(line):
+def handle_add(line):
     """
-    Validates cmd line arguments provided by user.
-    
-    Returns early if required flags not provided or invalid arguments required.
-    
+    Add an item to TinyDB.
     """
-    list_cmds = parse_flags(line)
-    
-    kwargs = {"name": "", "type": [], "taste": [], "favourite": "n", "compliments": [], "season": []}
-
-    required_flags = ['-n', '-t', '--taste', '-s']
-    allowed_flags = ['-n', '-t', '--taste', '-s', '-c', '-f']
-
-    if not list_cmds or not valid_flags(list_cmds, required_flags, allowed_flags):
+    processed_input = process_input(line, ['-n', '-t', '--taste', '-s'], item_flags, False, False, ['bulk'])
+    if not processed_input:
+        print("Add cancelled.")
         return
-        
-    for cmd in list_cmds:
-        flag = cmd[0][0]            
-        
-        match flag:
-            case "-n":
-                name = " ".join(cmd[1])
-                item = db.search(q.name == name)
-                if item:
-                    print(f"Item already exists in database: {name}")
-                    return
-                else:
-                    kwargs['name'] = name
-            case "-t":
-                for type in cmd[1]:
-                    is_valid_type = validate_type(type)
-                    if is_valid_type:
-                        kwargs['type'].append(type)
-            case '--taste':
-                for taste in cmd[1]:
-                    is_valid_taste = validate_taste(taste)
-                    if is_valid_taste:
-                        kwargs['taste'].append(taste)
-                    else:
-                        return
-            case '-s':
-                if len(cmd[1]) != 2:
-                    print("-s requires exactly int arguments: {start month} {end month}")
-                    return
-                else:
-                    for month in cmd[1]:
-                        is_valid_month = validate_month(month)
-                        if is_valid_month:
-                            kwargs['season'].append(int(month))
-            case '-f':
-                if validate_fav(cmd[1][0]):
-                    kwargs['favourite'] = cmd[1][0]
-            case '-c':
-                for item in cmd[1]:
-                    kwargs['compliments'].append(item)
+
+    names_to_process = processed_input[1]['-n']
     
-    return kwargs
+    
+    added = []
+    ignored = []
+    
+    for name in names_to_process:    
+        print(name.capitalize())    
+        item_to_add = {"name": "", "type": [], "taste": [], "favourite": "n", "compliments": [], "season": []}
+        
+        for flag, args in processed_input[1].items():
+            match flag:
+                case '-n':
+                    item_to_add['name'] = name
+                case "-t":
+                    item_to_add['type'] = args
+                case '--taste':
+                    item_to_add['taste'] = args
+                case '-s':
+                    item_to_add['season'] = args
+                case '-f':
+                    item_to_add['favourite'] = args
+                case '-c':
+                    item_to_add['compliments'] = args
+                    
+        item = db.search(q.name == name)
+        if item:
+            print(f"Item already in db. Adding to ignore list: {name}")
+            ignored.append(item_to_add)
+            continue    
+              
+        try:
+            db.insert(item_to_add)
+            print(f"Item added to db. Adding to added list: {name}")
+            added.append(item_to_add)
+        except SystemExit:
+            pass
+        
+    print(f"Added:")
+    print_cols(added)
+    print("")
+    print("Ignored (already exist in db):")
+    print_cols(ignored)
+    
 
 class MealPrompt(cmd.Cmd):
     prompt = ">>> "
@@ -332,16 +324,8 @@ class MealPrompt(cmd.Cmd):
         -c        Ingredients that compliment the item, separated by spaces (use "" for items with more than one word)
         -f        Favourite item (y, n)
         """
-        kwargs = validate_add_args(line)
-      
-        if kwargs:
-            try:
-                  db.insert(kwargs)
-                  print(f"Item added to db: {kwargs['name']}")
-            except SystemExit:
-                  pass
+        handle_add(line)
         
-
     def do_show(self, line):
         """
         Display items from the database.

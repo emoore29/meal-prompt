@@ -8,14 +8,6 @@
       "compliments": ["peanut butter"],
       "season": [1, 12]
     },
-    "3": {
-      "name": "strawberry",
-      "type": ["fruit"],
-      "taste": ["sweet"],
-      "favourite": "n",
-      "compliments": ["chocolate"],
-      "season": [1, 12]
-    },
     "4": {
       "name": "blueberry",
       "type": ["fruit"],
@@ -118,7 +110,7 @@
       "taste": ["savoury"],
       "favourite": "n",
       "compliments": ["cinnamon"],
-      "season": [4, 9]
+      "season": [3, 11]
     },
     "19": {
       "name": "capsicum",
@@ -399,6 +391,446 @@
       "favourite": "n",
       "compliments": [],
       "season": [1, 12]
+    },
+    "56": {
+      "name": "pomegranate",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [11, 3]
+    },
+    "57": {
+      "name": "asparagus",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "59": {
+      "name": "cherries",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [9, 2]
+    },
+    "64": {
+      "name": "apricot",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "72": {
+      "name": "blackberries",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "73": {
+      "name": "blueberries",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "74": {
+      "name": "boysenberries",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "75": {
+      "name": "cantaloupe",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "76": {
+      "name": "currants",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "77": {
+      "name": "fig",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "78": {
+      "name": "grapefruit",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "79": {
+      "name": "grapes",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "80": {
+      "name": "honeydew",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "81": {
+      "name": "lemon",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "82": {
+      "name": "loganberries",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "83": {
+      "name": "lychee",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "84": {
+      "name": "mulberries",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "85": {
+      "name": "necatrine",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "86": {
+      "name": "orange",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "87": {
+      "name": "passionfruit",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "88": {
+      "name": "plum",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "89": {
+      "name": "rambutan",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "90": {
+      "name": "raspberries",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "91": {
+      "name": "rhubarb",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "92": {
+      "name": "strawberries",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [9, 5]
+    },
+    "93": {
+      "name": "tamarillo",
+      "type": ["fruit"],
+      "taste": ["sweet"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "94": {
+      "name": "cabbage",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "95": {
+      "name": "celery",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "96": {
+      "name": "daikon",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "97": {
+      "name": "eggplant",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "98": {
+      "name": "leek",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [1, 12]
+    },
+    "99": {
+      "name": "spring onion",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "100": {
+      "name": "snow peas",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "101": {
+      "name": "radish",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [5, 3]
+    },
+    "102": {
+      "name": "shallot",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [1, 12]
+    },
+    "103": {
+      "name": "silverbeet",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [1, 12]
+    },
+    "104": {
+      "name": "squash",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "105": {
+      "name": "watercress",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [12, 2]
+    },
+    "106": {
+      "name": "artichokes",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [3, 5]
+    },
+    "107": {
+      "name": "broccoli",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [3, 5]
+    },
+    "108": {
+      "name": "cauliflower",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [3, 5]
+    },
+    "109": {
+      "name": "fennel",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [3, 5]
+    },
+    "110": {
+      "name": "lettuce",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [3, 5]
+    },
+    "111": {
+      "name": "mushrooms",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [3, 5]
+    },
+    "112": {
+      "name": "parsnip",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [3, 5]
+    },
+    "114": {
+      "name": "broccolini",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [6, 8]
+    },
+    "115": {
+      "name": "kale",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [6, 8]
+    },
+    "116": {
+      "name": "spinach",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [6, 8]
+    },
+    "117": {
+      "name": "sweet",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [6, 8]
+    },
+    "118": {
+      "name": "turnip",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [6, 8]
+    },
+    "119": {
+      "name": "artichoke",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [9, 11]
+    },
+    "120": {
+      "name": "brussels sprouts",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [9, 11]
+    },
+    "121": {
+      "name": "okra",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [9, 11]
+    },
+    "122": {
+      "name": "swede",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [9, 11]
+    },
+    "123": {
+      "name": "sweet potato",
+      "type": ["vegetable"],
+      "taste": ["savoury"],
+      "favourite": "n",
+      "compliments": [],
+      "season": [9, 11]
     }
   }
 }

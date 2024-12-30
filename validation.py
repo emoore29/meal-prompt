@@ -92,7 +92,7 @@ def valid_flags(parsed_flags, required, allowed):
             return False
     return True
 
-def validate_name(args, edit):
+def validate_name(args, edit, bulk):
       """
       Checks name is a single argument, unless editing. 
       If editing, ensures only two arguments were provided - -<name> and +<new name>
@@ -110,13 +110,14 @@ def validate_name(args, edit):
                         return False
                   
       else:
-            if len(args) != 1:
-                  print("Only one argument allowed for name. Multi-word name must be wrapped in \"\"")
-                  return False
+            if not bulk: # Allow multiple args for name if bulk == True
+                  if len(args) != 1:
+                      print("Only one argument allowed for name. Multi-word name must be wrapped in \"\"")
+                      return False
             
       return True
 
-def valid_flag_args(parsed_flags, prompt, edit):
+def valid_flag_args(parsed_flags, prompt, edit, bulk=False):
       """
       Validates arguments in parsed_input against flags.  
       Converts arguments where required - e.g. str months to int, quoted names to single arg??
@@ -131,7 +132,7 @@ def valid_flag_args(parsed_flags, prompt, edit):
           
           match flag:
                 case '-n':
-                      valid = validate_name(args, edit)
+                      valid = validate_name(args, edit, bulk)
                       if not valid:
                             return False
                 case '-t':

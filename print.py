@@ -10,11 +10,12 @@ def print_cols(items):
     """
     Takes list of items, prints with max 10 rows (new col once 10 is exceeded)
     """
+    if len(items) == 0:
+         return
     max_rows = 8
     column_width = max(len(item['name']) for item in items) + 2
     
     sorted_items = sorted(items, key=lambda x: x['name'])
-    
     
     for row in range(max_rows):
             row_text = "" # Start a new row
