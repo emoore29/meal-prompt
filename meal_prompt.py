@@ -94,7 +94,7 @@ def handle_prompt(line):
         print("Prompt cancelled")
         return 
     
-    taste = processed_input['--taste'][0]
+    taste = processed_input[1]['--taste'][0]
     
     generate_prompt(taste)
     
@@ -318,7 +318,6 @@ def handle_add(line):
     ignored = []
     
     for name in names_to_process:    
-        print(name.capitalize())    
         item_to_add = {"name": "", "type": [], "taste": [], "favourite": "n", "compliments": [], "season": []}
         
         for flag, args in processed_input[1].items():
@@ -338,22 +337,23 @@ def handle_add(line):
                     
         item = db.search(q.name == name)
         if item:
-            print(f"Item already in db. Adding to ignore list: {name}")
             ignored.append(item_to_add)
             continue    
               
         try:
             db.insert(item_to_add)
-            print(f"Item added to db. Adding to added list: {name}")
             added.append(item_to_add)
         except SystemExit:
             pass
         
-    print(f"Added:")
-    print_cols(added)
-    print("")
-    print("Ignored (already exist in db):")
-    print_cols(ignored)
+    if len(added) > 0:
+        print("")
+        print(f"Added:")
+        print_cols(added)
+    if len(ignored) > 0:
+        print("")
+        print("Ignored (already exist in db):")
+        print_cols(ignored)
     
 
 class MealPrompt(cmd.Cmd):

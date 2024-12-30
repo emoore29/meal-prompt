@@ -813,8 +813,16 @@
       "type": ["carb", "vegetable"],
       "taste": ["savoury"],
       "favourite": "n",
-      "compliments": ["beetroot", "cabbage", "kidney beans"],
+      "compliments": ["beetroot", "kidney beans"],
       "season": [9, 11]
+    },
+    "124": {
+      "name": "avocado",
+      "type": ["fruit", "fat"],
+      "taste": ["savoury", "sweet"],
+      "favourite": ["y"],
+      "compliments": [],
+      "season": [5, 1]
     }
   }
 }
