@@ -185,15 +185,122 @@ def handle_show(line):
     else:
         print("Error.")
 
+def edit_item(name, flag_args, item_to_edit):
+    """
+    Updates values of item_to_edit and then updates database with new item.
+    """
+    for flag, args in flag_args.items():
+        changes = 0
+        match flag:
+            case '-n':
+                for arg in args:
+                    if arg[0] == "+":
+                        item_to_edit['name'] = trim_signs(arg)
+                        changes += 1
+            case '-t':
+                num_types = len(item_to_edit['type'])
+                count = 0
+                for arg in args:
+                    if arg[0] == "-":
+                        count -= 1
+                    if arg[0] == "+":
+                        count += 1
+                if num_types + count == 0:
+                    print(f"Item requires at least one type. Cannot remove type.")
+                else:
+                    for arg in args:
+                        if arg[0] == "-":
+                            if trim_signs(arg) in item_to_edit['type']:
+                                item_to_edit['type'].remove(trim_signs(arg))
+                                changes += 1
+                                
+                        if arg[0] == "+":
+                            if trim_signs(arg) in item_to_edit['type']:
+                                print(f"Item already contains {arg}")
+                            else:
+                                item_to_edit['type'].append(trim_signs(arg))
+                                changes += 1
+                                
+            case '--taste':
+                num_tastes = len(item_to_edit['taste'])
+                count = 0
+                for arg in args:
+                    if arg[0] == "-":
+                        count -= 1
+                    if arg[0] == "+":
+                        count += 1
+                if num_tastes + count == 0:
+                    print(f"Item requires at least one taste. Cannot remove taste.")
+                else:
+                    for arg in args:
+                        if arg[0] == "-":
+                            if trim_signs(arg) in item_to_edit['taste']:
+                                item_to_edit['taste'].remove(trim_signs(arg))
+                                changes += 1
+                        if arg[0] == "+":
+                            if trim_signs(arg) in item_to_edit['taste']:
+                                print(f"Item already contains {trim_signs(arg)}")
+                            else:
+                                item_to_edit['taste'].append(trim_signs(arg))
+                                changes += 1
+            case '-f':
+                item_to_edit['favourite'] = trim_signs(args[0])
+                changes += 1
+            case '-c':
+                for arg in args:
+                    if arg[0] == "+":
+                        if trim_signs(arg) in item_to_edit['compliments']:
+                                print(f"Item already contains {trim_signs(arg)}")
+                        else:
+                            item_to_edit['compliments'].append(trim_signs(arg))
+                            changes += 1
+                    if arg[0] == "-":
+                        if trim_signs(arg) in item_to_edit['compliments']:
+                                item_to_edit['compliments'].remove(trim_signs(arg))
+                                changes += 1
+                        else:
+                            print(f"Item does not contain {trim_signs(arg)}")
+            case '-s':
+                item_to_edit['season'] = args
+                changes += 1
+    
+    if changes > 0:
+        try:
+            db.update(item_to_edit, q.name==name)
+            print("Updated item")
+        except SystemExit:
+            pass
+        
+    else:
+        print("No changes required.")
+    
+
+def trim_signs(s):
+    return s.lstrip('+-')
+
 def handle_edit(line):
     """
     Edits item in database based on user input.
     """
-    processed_input = process_input(line, ['-n'], ['-n'], prompt=False, edit=True)
+    processed_input = process_input(line, ['-n'], ['-n', '-t', '--taste', '-f', '-c', '-s'], prompt=False, edit=True)
     if not processed_input:
         print("Edit cancelled.")
         return
-    print("Changes to make:", processed_input)
+    flag_args = processed_input[1]
+    name = trim_signs(flag_args['-n'][0])
+    results = db.search(q.name == name)
+    if not results:
+        print(f"Item not found: {name}")
+        return
+    elif len(results) == 1:
+        item_to_edit = results[0]
+    else:
+        print("Error. Multiple items of that name found.")
+    
+    edit_item(name, flag_args, item_to_edit)
+    
+    
+    
     
 def handle_add(line):
     """
@@ -263,7 +370,7 @@ class MealPrompt(cmd.Cmd):
                           | |                       | |        
                           |_|                       |_|        
 """
-    intro = f"{GREEN}{banner}{END} \nBy emoore29.github.io.  \nBanner font by patorjk.com. \n\nWelcome to Meal Prompt!\nType 'help' for available commands. \n"
+    intro = f"{GREEN}{banner}{END} \nCreator: emoore29.github.io  \nBanner font: patorjk.com \n\n---------------------------\n\nWelcome to Meal Prompt!\nType 'help' for available commands. \n"
     
     def __init__(self):
         super().__init__()

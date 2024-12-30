@@ -504,14 +504,6 @@
       "compliments": [],
       "season": [12, 2]
     },
-    "82": {
-      "name": "loganberries",
-      "type": ["fruit"],
-      "taste": ["sweet"],
-      "favourite": "n",
-      "compliments": [],
-      "season": [12, 2]
-    },
     "83": {
       "name": "lychee",
       "type": ["fruit"],
@@ -529,7 +521,7 @@
       "season": [12, 2]
     },
     "85": {
-      "name": "necatrine",
+      "name": "nectarine",
       "type": ["fruit"],
       "taste": ["sweet"],
       "favourite": "n",
@@ -554,14 +546,6 @@
     },
     "88": {
       "name": "plum",
-      "type": ["fruit"],
-      "taste": ["sweet"],
-      "favourite": "n",
-      "compliments": [],
-      "season": [12, 2]
-    },
-    "89": {
-      "name": "rambutan",
       "type": ["fruit"],
       "taste": ["sweet"],
       "favourite": "n",
@@ -826,10 +810,10 @@
     },
     "123": {
       "name": "sweet potato",
-      "type": ["vegetable"],
+      "type": ["carb", "vegetable"],
       "taste": ["savoury"],
       "favourite": "n",
-      "compliments": [],
+      "compliments": ["beetroot", "cabbage", "kidney beans"],
       "season": [9, 11]
     }
   }
