@@ -62,9 +62,9 @@ def print_item(item):
 
       
       print(item['name'].title())
-      print("-" * 10)
+      print("-" * len(item['name']))
       print("Type: ", ", ".join(item['type']))
       print("Taste: ", ", ".join(item['taste']))
       print("Favourite: ", "yes" if item['favourite'] == 'y' else "no")
       print("Compliments: ", ", ".join(item['compliments'])) if len(item['compliments']) > 1 else print("Compliments: none")
-      print("Season: ", f"{months[item['season'][0]]} - {months[item['season'][1]]}") if item['season'] != 'n/a' else print("Season: n/a")
+      print("Season: ", f"{months[item['season'][0]]} - {months[item['season'][1]]}") if item['season'] != [] else print("Season: n/a")

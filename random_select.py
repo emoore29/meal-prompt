@@ -30,6 +30,8 @@ def get_random_ingredient(type, taste):
         matches = db.search(query)
   
         if len(matches) > 0:
-              return random.choice(matches)['name']
+              random_ingredient = random.choice(matches)
+              print(random_ingredient)
+              return random_ingredient
         else:
               return None

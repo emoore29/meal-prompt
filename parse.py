@@ -55,9 +55,18 @@ def transform_input(parsed_input):
     """
     Transforms input into expected data structure(s).
     """
+    seasonal = False
+    if "-t" in parsed_input.keys():
+        if "fruit" in parsed_input['-t'] or "vegetable" in parsed_input['-t']:
+            seasonal = True
+
     for flag, args in parsed_input.items():
         match flag:
             case '-s':
+                # Make non-seasonal items season [] by default
+                if not seasonal:
+                    parsed_input[flag] = []
+                    continue
                 # Convert string digits to ints
                 int_months = []
                 for arg in args:

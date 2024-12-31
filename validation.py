@@ -125,11 +125,24 @@ def valid_flag_args(parsed_flags, prompt, edit, bulk=False):
       Params:
       parsed_input -- list of tuples containing (flag, args)    
       """
+      
+      # Check if item is a fruit or vegetable (-s required if so)
+      # seasonal = False
+      # types = parsed_flags['-t']
+      # for type in types:
+      #       if type == "fruit" or type == "vegetable":
+      #             seasonal = True
+                  
+      # # If seasonal, require -s flag:
+      # if seasonal:
+      #       if "-s" not in parsed_flags.keys():
+      #             print("Required flag missing for seasonal type: -s")
+      #             return False
+      
       for flag, args in parsed_flags.items():
           if len(args) == 0:
                 print(f"Missing arguments for {flag}")
                 return False
-          
           match flag:
                 case '-n':
                       valid = validate_name(args, edit, bulk)
@@ -154,12 +167,14 @@ def valid_flag_args(parsed_flags, prompt, edit, bulk=False):
                       # Compliments don't (yet) require validation
                       continue
                 case '-s':
-                      if len(args) != 2:
-                            print("Must provide exactly two months.")
-                            return False
-                      for arg in args:
-                            if not valid_month(arg):
-                                  return False
+                        # if not seasonal:
+                        #       continue
+                        if len(args) != 2:
+                              print("Must provide exactly two months.")
+                              return False
+                        for arg in args:
+                              if not valid_month(arg):
+                                    return False
       return True
 
 def valid_positional(parsed_positional, positional_args):

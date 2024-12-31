@@ -102,24 +102,35 @@ def generate_prompt(taste):
     """
     Pseudo-randomly select ingredients for a "meal prompt"
     """
-    fruit = get_random_ingredient("fruit", taste)
-    veg = get_random_ingredient("vegetable", taste)
-    carb = get_random_ingredient("carb", taste)
-    protein = get_random_ingredient("protein", taste)
-    fat = get_random_ingredient("fat", taste)
-    
-    title = f"{taste.title()} Meal Prompt"
-    
+    types = ['fruit', 'vegetable', 'carb', 'fat', 'protein']
+    added = []
     print("")
-    print("-" * len(title))
-    print(title)
-    print("-" * len(title))
-    print(f"Fruit: {fruit}") 
-    print(f"Veg: {veg}") if veg else None
-    print(f"Carb: {carb}") 
-    print(f"Protein: {protein}") 
-    print(f"Fat: {fat}") 
+    while len(types) > 0:
+        random_type = random.choice(types)
+        random_ingredient = get_random_ingredient(random_type, taste)
+        if random_ingredient:
+            prompt_type = ""
+            for type in random_ingredient['type']:
+                # Add type to prompt_type (unless already added)
+                if type not in added:
+                    if len(prompt_type) == 0:
+                        prompt_type += type
+                    else:
+                        prompt_type += "/" + type
+                    added.append(type)
+                
+                # Remove type from list of types to search through
+                if type in types:
+                    types.remove(type)
+                    
+            # print(f"{prompt_type}: {random_ingredient['name']}") # Verbose version with types printed
+            print(f"{random_ingredient['name']}")
+        else:
+            types.remove(random_type)
     print("")
+                
+            
+    
     
 def get_random_ingredient(type, taste):
         """
@@ -145,7 +156,8 @@ def get_random_ingredient(type, taste):
         matches = db.search(query)
   
         if len(matches) > 0:
-            return random.choice(matches)['name']
+            random_ingredient = random.choice(matches)
+            return random_ingredient
         else:
             return None   
 

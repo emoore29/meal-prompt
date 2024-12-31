@@ -2,7 +2,7 @@ from datetime import date
 
 
 def is_in_season(entry):
-      if entry == 'n/a':
+      if entry == []:
             # Ignore season for non-seasonal items
             return False
             
