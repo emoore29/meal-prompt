@@ -6,8 +6,8 @@ from parse import *
 from print import *
 import random
 
-db = TinyDB('db.json')
-q = Query()
+# db = TinyDB('self.db.json')
+# q = Query()
 
 item_flags = ['-n', '-t', '--taste', '-f', '-c', '-s']
 
@@ -32,6 +32,8 @@ class MealPrompt(cmd.Cmd):
     
     def __init__(self):
         super().__init__()
+        self.db = TinyDB('db.json')
+        self.q = Query()
         
     
     def do_square(self, line):
@@ -175,7 +177,7 @@ class MealPrompt(cmd.Cmd):
             print("Remove cancelled.")
             return
         name = processed_input[1]['-n'][0]
-        results = db.search(q.name == name)
+        results = self.db.search(self.q.name == name)
         if len(results) > 1:
             print(f"Multiple items found with name {name}")
             confirm_delete = input("\nDeletion will remove all items. Confirm delete? (y/n) ")
@@ -188,7 +190,7 @@ class MealPrompt(cmd.Cmd):
             return
         
         if confirm_delete == "y":
-            db.remove(q.name == name)
+            self.db.remove(self.q.name == name)
             print(f"Deleted item: {name}")
         else:
             print("Item not deleted.")
@@ -207,7 +209,59 @@ class MealPrompt(cmd.Cmd):
         taste = processed_input[1]['--taste'][0]
         
         self.generate_prompt(taste)
+    
+    def generate_query(self, processed_input):
+        """
+        Generates a TinyDB query based on the processed user input.
         
+        Return:
+        query -- db query    
+        """
+        query = None # Query to be built upon
+        exact = False # Whether or not exact matches are preferred (e.g. taste: sweet AND savoury, not sweet OR savoury)
+        is_name_query = False
+        types = ['fruit', 'vegetable', 'carb', 'protein', 'fat']
+        positional_args, flag_args = processed_input
+
+        for arg in positional_args:
+            match arg:
+                case "all":
+                    if query is None:
+                        query = self.q.type.any(types)
+                    else:
+                        query &= self.q.type.any(types)
+                case "seasonal":
+                    if query is None:
+                        query = self.q.season.test(is_in_season)
+                    else:
+                        query &= self.q.season.test(is_in_season)
+                case "favs":
+                    if query is None:
+                        query = self.q.favourite == 'y'
+                    else:
+                        query &= self.q.favourite == 'y'
+                case "exact":
+                    exact = True  
+                    
+        for flag, args in flag_args.items():
+            match flag:
+                case "-n":
+                        is_name_query = True
+                        query = self.q.name == args[0]
+                        return query, is_name_query
+                case "-t":                     
+                    if query is None:
+                        query = self.q.type.all(args) if exact else self.q.type.any(args)
+                    else:
+                        query &= self.q.type.all(args) if exact else self.q.type.any(args)
+                case "--taste":                
+                    if query is None:
+                        query = self.q.taste.all(args) if exact else self.q.taste.any(args)
+                    else:
+                        query &= self.q.taste.all(args) if exact else self.q.taste.any(args)
+        
+        return query, is_name_query
+      
     def generate_prompt(self, taste):
         """
         Pseudo-randomly select ingredients for a "meal prompt"
@@ -239,7 +293,7 @@ class MealPrompt(cmd.Cmd):
                 types.remove(random_type)
         print("")
         
-    def get_random_ingredient(type, taste):
+    def get_random_ingredient(self, type, taste):
             """
             Selects an ingredient from a source and category
             
@@ -248,19 +302,19 @@ class MealPrompt(cmd.Cmd):
             taste -- sweet or savoury
             """
             
-            query = q.type.any(type) & q.taste.any(taste)
+            query = self.q.type.any(type) & self.q.taste.any(taste)
             
             # Only select fruit/veg in season
             if type == "fruit" or type == "vegetable":
-                query &= q.season.test(is_in_season)
+                query &= self.q.season.test(is_in_season)
             
             pick_from_favs = random.choices([True, False], weights=[55, 45], k=1)[0]
             if pick_from_favs:
-                    matches = db.search(query & (q.favourite == "y"))
+                    matches = self.db.search(query & (self.q.favourite == "y"))
                     if len(matches) > 0: # Only get from favs if there are favourites
-                        query &= q.favourite == "y"
+                        query &= self.q.favourite == "y"
             
-            matches = db.search(query)
+            matches = self.db.search(query)
     
             if len(matches) > 0:
                 random_ingredient = random.choice(matches)
@@ -288,11 +342,11 @@ class MealPrompt(cmd.Cmd):
             print("Show cancelled.")
             return
 
-        query, is_name_query = generate_query(processed_input)
+        query, is_name_query = self.generate_query(processed_input)
         
         if query:
             print("")
-            results = db.search(query)
+            results = self.db.search(query)
             if results:
                 if is_name_query:
                     print_item(results[0])
@@ -385,7 +439,7 @@ class MealPrompt(cmd.Cmd):
         
         if changes > 0:
             try:
-                db.update(item_to_edit, q.name==name)
+                self.db.update(item_to_edit, self.q.name==name)
                 print("Updated item")
             except SystemExit:
                 pass
@@ -404,7 +458,7 @@ class MealPrompt(cmd.Cmd):
         flag_args = processed_input[1]
         print(flag_args['-n'][0])
         name = trim_signs(flag_args['-n'][0])
-        results = db.search(q.name == name)
+        results = self.db.search(self.q.name == name)
         if not results:
             print(f"Item not found: {name}")
             return
@@ -417,7 +471,7 @@ class MealPrompt(cmd.Cmd):
   
     def handle_add(self, line):
         """
-        Add an item to TinyDB.
+        Add an item to Tinyself.db.
         """
         processed_input = self.process_input(line, ['-n', '-t', '--taste', '-s'], item_flags, False, False, ['bulk'])
         if not processed_input:
@@ -447,13 +501,13 @@ class MealPrompt(cmd.Cmd):
                     case '-c':
                         item_to_add['compliments'] = args
                         
-            item = db.search(q.name == name)
+            item = self.db.search(self.q.name == name)
             if item:
                 ignored.append(item_to_add)
                 continue    
                 
             try:
-                db.insert(item_to_add)
+                self.db.insert(item_to_add)
                 added.append(item_to_add)
             except SystemExit:
                 pass

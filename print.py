@@ -1,10 +1,6 @@
 import re
-from tinydb import TinyDB, Query
 from season import *
 
-
-db = TinyDB('db.json')
-q = Query()
 
 def print_cols(items):
     """
