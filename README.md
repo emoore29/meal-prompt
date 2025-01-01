@@ -2,7 +2,7 @@
 
 Meal Prompt is an interactive shell written in Python. It allows users to request a 'meal prompt', which is a list of ingredients semi-randomly selected from a TinyDB. Users can also view and update the database via the CLI.
 
-![Demo](Code_rXHdQTKDKv.gif)
+![Demo](Code_CkIaiVNi7o.gif)
 
 ## About
 
