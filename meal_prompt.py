@@ -4,6 +4,8 @@ from validation import *
 from process import *
 from print import *
 import random
+from colorama import just_fix_windows_console
+just_fix_windows_console()
 
 item_flags = ['-n', '-t', '--taste', '-f', '-c', '-s']
 
@@ -226,7 +228,7 @@ class MealPrompt(cmd.Cmd):
             if random_ingredient and random_ingredient['name'] not in added:
                 prompt_type = ""
                 for type in random_ingredient['type']:
-                    # Add type to prompt_type (unless already added)
+                    # Add type to prompt_type
                     if len(prompt_type) == 0:
                         prompt_type += type
                     else:
@@ -257,7 +259,7 @@ class MealPrompt(cmd.Cmd):
             if type == "fruit" or type == "vegetable":
                 query &= self.q.season.test(is_in_season)
             
-            pick_from_favs = random.choices([True, False], weights=[55, 45], k=1)[0]
+            pick_from_favs = random.choices([True, False], weights=[52, 48], k=1)[0]
             if pick_from_favs:
                     matches = self.db.search(query & (self.q.favourite == "y"))
                     if len(matches) > 0: # Only get from favs if there are favourites
