@@ -2,9 +2,11 @@
 
 Meal Prompt is an interactive shell written in Python. It allows users to request a 'meal prompt', which is a list of ingredients semi-randomly selected from a TinyDB. Users can also view and update the database via the CLI.
 
+![Demo](Code_rXHdQTKDKv.gif)
+
 ## About
 
-The purpose of Meal Prompt is to help users eat seasonally and inspire creative cooking with variety. Meal prompts will typically include suggestions of at least one seasonal fruit and/or vegetable alongside a source of carbohydrates, protein, and fat. The prompts are not meant to be a perfect meal. Which ingredients to use, which to ignore, and how to combine them is all for the user to come up with!
+The purpose of Meal Prompt is to help users eat seasonally and come up with meal ideas. Meal prompts will typically include suggestions of at least one seasonal fruit and/or vegetable alongside a source of carbohydrates, protein, and fat. The prompts are not meant to be a perfect meal. Which ingredients to use, which to ignore, and how to combine them is all for the user to come up with!
 
 However, to ensure ingredients are somewhat compatible, ingredients are selected based on their sweet and savoury characteristics. Complimentary ingredients will be used in future updates to improve the compatibility of ingredient suggestions.
 
@@ -75,7 +77,7 @@ pip install -r requirements.txt
 py meal_prompt.py
 ```
 
-## REquirements
+## Requirements
 
 - Python 3.12.2 or higher
 - Dependencies: Listed in requirements.txt
