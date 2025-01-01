@@ -1,8 +1,9 @@
 import unittest
-from cmd import Cmd
 from io import StringIO
 import sys
-from meal_prompt import MealPrompt, get_random_ingredient
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Allows access to meal_prompt from tests directory
+from meal_prompt import MealPrompt
 from tinydb import TinyDB, Query
 
 db = TinyDB('testdb.json')
@@ -16,7 +17,7 @@ class TestMealPrompt(unittest.TestCase):
       
       """
       def setUp(self):
-        self.app = MealPrompt()
+        self.app = MealPrompt(db_file='test_db.json')
         
       def test_quit(self):
            self.assertEqual(self.app.do_quit(""), True, "Quit return is wrong.")
@@ -49,9 +50,10 @@ class TestMealPrompt(unittest.TestCase):
             "season": [5, 10]
             }
            
-           self.assertEqual(get_random_ingredient(type, taste), expected, "Random ingredient is wrong.")
+           result = self.app.get_random_ingredient(type, taste)
            
-            
+           self.assertEqual(result, expected, "Random ingredient is wrong.")
+           
             
             
 if __name__ == '__main__':

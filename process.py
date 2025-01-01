@@ -1,8 +1,53 @@
 import re
 from validation import *
-from season import *
 
 
+def trim_signs(s):
+        return s.lstrip('+-')
+
+def process_input(line, required_flags, allowed_flags, prompt, edit, positional_args=[]):
+    """
+    Parses, validates, and transforms a user's input.
+    
+    Checks flags and provided arguments are valid.
+    
+    Return:
+    parsed_input -- if valid
+    False -- if not valid
+    """
+    # Parse input
+    if parse_input(line):
+        parsed_positional, parsed_flags = parse_input(line)
+    else:
+        return False
+        
+    # Check at least a positional arg or flag was provided
+    if not parsed_flags and not parsed_positional:
+        print("Input missing either flags or positional args.")
+        return False
+    
+    # Validate parsed input
+    if parsed_positional[0] != '':
+        if not valid_positional(parsed_positional, positional_args):
+            print("invalid positional")
+            return False
+    
+    bulk = False
+    if "bulk" in parsed_positional:
+        bulk = True
+
+    if parsed_flags != {}:
+        if not valid_flags(parsed_flags, required_flags, allowed_flags):
+            print("invalid flags")
+            return False
+        if not valid_flag_args(parsed_flags, prompt, edit, bulk):
+            print("invalid flag args")
+            return False
+    
+    # Transform input
+    transformed_flags = transform_input(parsed_flags)
+    
+    return parsed_positional, transformed_flags
 
 def parse_input(input):
       """
@@ -73,4 +118,4 @@ def transform_input(parsed_input):
     
     return parsed_input
     
-    
+

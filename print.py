@@ -1,6 +1,4 @@
 import re
-from season import *
-
 
 def print_cols(items):
     """

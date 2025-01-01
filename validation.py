@@ -1,6 +1,26 @@
-def validate_taste(args, prompt=False, edit=False):
-      valid_tastes = ['sweet', 'savoury']
+from datetime import date
+
+valid_tastes = ['sweet', 'savoury']
+valid_types = ['fruit', 'vegetable', 'carb', 'fat', 'protein']
+valid_favs = ['y', 'n']
+valid_months = list(range(1, 13))
+
+def is_in_season(entry):
+      if entry == []:
+            # Ignore season for non-seasonal items
+            return False
+            
+      start = entry[0]
+      end = entry[1]
+      today = date.today()
+      month = today.month
       
+      if start <= end: # Range doesn't wrap around year
+            return start <= month <= end
+      else: # Range wraps around year
+            return month >= start or month <= end
+
+def validate_taste(args, prompt=False, edit=False):      
       if edit:
             valid_options = []
             for type in valid_tastes:
@@ -29,7 +49,6 @@ def validate_taste(args, prompt=False, edit=False):
       return True
       
 def validate_type(args, edit=False):
-      valid_types = ['fruit', 'vegetable', 'carb', 'fat', 'protein']
       if edit:
             valid_options = []
             for type in valid_types:
@@ -50,7 +69,6 @@ def validate_type(args, edit=False):
       return True
       
 def valid_fav(str):
-      valid_favs = ['y', 'n']
       if str not in valid_favs:
             print(f"Invalid favourite. Choose from: {valid_favs}")
             return False
@@ -64,7 +82,6 @@ def valid_month(str):
             print("Month must be an integer between 1 and 12 (inclusive)")
             return False
       
-      valid_months = list(range(1, 13))
       if month not in valid_months:
             print(f"Invalid month. Choose from: {valid_months}")
             return False
@@ -125,20 +142,6 @@ def valid_flag_args(parsed_flags, prompt, edit, bulk=False):
       Params:
       parsed_input -- list of tuples containing (flag, args)    
       """
-      
-      # Check if item is a fruit or vegetable (-s required if so)
-      # seasonal = False
-      # types = parsed_flags['-t']
-      # for type in types:
-      #       if type == "fruit" or type == "vegetable":
-      #             seasonal = True
-                  
-      # # If seasonal, require -s flag:
-      # if seasonal:
-      #       if "-s" not in parsed_flags.keys():
-      #             print("Required flag missing for seasonal type: -s")
-      #             return False
-      
       for flag, args in parsed_flags.items():
           if len(args) == 0:
                 print(f"Missing arguments for {flag}")
@@ -167,8 +170,6 @@ def valid_flag_args(parsed_flags, prompt, edit, bulk=False):
                       # Compliments don't (yet) require validation
                       continue
                 case '-s':
-                        # if not seasonal:
-                        #       continue
                         if len(args) != 2:
                               print("Must provide exactly two months.")
                               return False
@@ -181,7 +182,6 @@ def valid_positional(parsed_positional, positional_args):
       """
       Checks list of positional args are allowed
       """
-      
       for arg in parsed_positional:
             if arg not in positional_args:
                   print(f"Invalid positional argument: {arg}")

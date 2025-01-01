@@ -2,7 +2,6 @@ import random
 import argparse
 from tinydb import TinyDB, Query
 from print import *
-from season import *
 
 # Original code using argparse instead of cmd, kept for reference.
 

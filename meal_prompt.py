@@ -1,18 +1,11 @@
 import cmd
 from tinydb import TinyDB, Query
-import re
 from validation import *
-from parse import *
+from process import *
 from print import *
 import random
 
-# db = TinyDB('self.db.json')
-# q = Query()
-
 item_flags = ['-n', '-t', '--taste', '-f', '-c', '-s']
-
-def trim_signs(s):
-        return s.lstrip('+-')
 
 class MealPrompt(cmd.Cmd):
     prompt = ">>> "
@@ -30,17 +23,20 @@ class MealPrompt(cmd.Cmd):
 """
     intro = f"{GREEN}{banner}{END} \nCreator: emoore29.github.io  \nBanner font: patorjk.com \n\n---------------------------\n\nWelcome to Meal Prompt!\nType 'help' for available commands. \n"
     
-    def __init__(self):
+    def __init__(self, db_file='db.json'):
         super().__init__()
-        self.db = TinyDB('db.json')
+        self.db = TinyDB(db_file)
         self.q = Query()
         
     
-    def do_square(self, line):
-        def square(str):
-            return int(str) * int(str)
+    # def do_square(self, line):
+    #     """
+    #     Simple function for reference while writing unit tests.
+    #     """
+    #     def square(str):
+    #         return int(str) * int(str)
         
-        print(square(line))
+    #     print(square(line))
     
     def do_pmt(self, line):
         """
@@ -124,55 +120,11 @@ class MealPrompt(cmd.Cmd):
         """Exit the CLI."""
         return True
     
-    def process_input(self, line, required_flags, allowed_flags, prompt, edit, positional_args=[]):
-        """
-        Parses, validates, and transforms a user's input.
-        
-        Checks flags and provided arguments are valid.
-        
-        Return:
-        parsed_input -- if valid
-        False -- if not valid
-        """
-        # Parse input
-        if parse_input(line):
-            parsed_positional, parsed_flags = parse_input(line)
-        else:
-            return False
-            
-        # Check at least a positional arg or flag was provided
-        if not parsed_flags and not parsed_positional:
-            print("Input missing either flags or positional args.")
-            return False
-        
-        # Validate parsed input
-        if parsed_positional[0] != '':
-            if not valid_positional(parsed_positional, positional_args):
-                print("invalid positional")
-                return False
-        
-        bulk = False
-        if "bulk" in parsed_positional:
-            bulk = True
-
-        if parsed_flags != {}:
-            if not valid_flags(parsed_flags, required_flags, allowed_flags):
-                print("invalid flags")
-                return False
-            if not valid_flag_args(parsed_flags, prompt, edit, bulk):
-                print("invalid flag args")
-                return False
-        
-        # Transform input
-        transformed_flags = transform_input(parsed_flags)
-        
-        return parsed_positional, transformed_flags
-
     def handle_remove(self, line):
         """
         Removes item from database if it exists.
         """
-        processed_input = self.process_input(line, ['-n'], ['-n'], False, False)
+        processed_input = process_input(line, ['-n'], ['-n'], False, False)
         if not processed_input:
             print("Remove cancelled.")
             return
@@ -200,8 +152,7 @@ class MealPrompt(cmd.Cmd):
         Generates a meal prompt if user input is valid.
         
         """
-
-        processed_input = self.process_input(line, ['--taste'], ['--taste'], prompt=True, edit=False)
+        processed_input = process_input(line, ['--taste'], ['--taste'], prompt=True, edit=False)
         if not processed_input:
             print("Prompt cancelled")
             return 
@@ -268,27 +219,26 @@ class MealPrompt(cmd.Cmd):
         """
         types = ['fruit', 'vegetable', 'carb', 'fat', 'protein']
         added = []
-        print("")
+        print("") 
         while len(types) > 0:
             random_type = random.choice(types)
             random_ingredient = self.get_random_ingredient(random_type, taste)
-            if random_ingredient:
+            if random_ingredient and random_ingredient['name'] not in added:
                 prompt_type = ""
                 for type in random_ingredient['type']:
                     # Add type to prompt_type (unless already added)
-                    if type not in added:
-                        if len(prompt_type) == 0:
-                            prompt_type += type
-                        else:
-                            prompt_type += "/" + type
-                        added.append(type)
+                    if len(prompt_type) == 0:
+                        prompt_type += type
+                    else:
+                        prompt_type += "/" + type
+                    added.append(type)
                     
                     # Remove type from list of types to search through
                     if type in types:
                         types.remove(type)
                         
-                # print(f"{prompt_type}: {random_ingredient['name']}") # Verbose version with types printed
-                print(f"{random_ingredient['name']}")
+                print(f"{prompt_type}: {random_ingredient['name']}") # Verbose version with types printed
+                # print(f"{random_ingredient['name']}")
             else:
                 types.remove(random_type)
         print("")
@@ -301,7 +251,6 @@ class MealPrompt(cmd.Cmd):
             type -- protein, fat, carb, fruit, or vegetable
             taste -- sweet or savoury
             """
-            
             query = self.q.type.any(type) & self.q.taste.any(taste)
             
             # Only select fruit/veg in season
@@ -337,7 +286,7 @@ class MealPrompt(cmd.Cmd):
         """
         query = None
         is_name_query = False
-        processed_input = self.process_input(line, [], item_flags, False, False, ['all', 'seasonal', 'favs', 'exact'])
+        processed_input = process_input(line, [], item_flags, False, False, ['all', 'seasonal', 'favs', 'exact'])
         if not processed_input:
             print("Show cancelled.")
             return
@@ -451,7 +400,7 @@ class MealPrompt(cmd.Cmd):
         """
         Edits item in database based on user input.
         """
-        processed_input = self.process_input(line, ['-n'], ['-n', '-t', '--taste', '-f', '-c', '-s'], prompt=False, edit=True)
+        processed_input = process_input(line, ['-n'], ['-n', '-t', '--taste', '-f', '-c', '-s'], prompt=False, edit=True)
         if not processed_input:
             print("Edit cancelled.")
             return
@@ -473,7 +422,7 @@ class MealPrompt(cmd.Cmd):
         """
         Add an item to Tinyself.db.
         """
-        processed_input = self.process_input(line, ['-n', '-t', '--taste', '-s'], item_flags, False, False, ['bulk'])
+        processed_input = process_input(line, ['-n', '-t', '--taste', '-s'], item_flags, False, False, ['bulk'])
         if not processed_input:
             print("Add cancelled.")
             return

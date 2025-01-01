@@ -7,14 +7,6 @@
       "favourite": "y",
       "compliments": ["peanut butter"],
       "season": [1, 12]
-    },
-    "4": {
-      "name": "blueberry",
-      "type": ["fruit"],
-      "taste": ["sweet"],
-      "favourite": "n",
-      "compliments": ["yogurt"],
-      "season": [5, 10]
     }
   }
 }
